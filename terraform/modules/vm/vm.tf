@@ -1,4 +1,4 @@
-resource "azurerm_network_interface" "" {
+resource "azurerm_network_interface" "test" {
   name                = "${var.application_type}-nic"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group}"
@@ -11,7 +11,7 @@ resource "azurerm_network_interface" "" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "" {
+resource "azurerm_linux_virtual_machine" "test" {
   name                =  "${var.application_type}-${var.resource_type}"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group}"
@@ -20,7 +20,7 @@ resource "azurerm_linux_virtual_machine" "" {
   network_interface_ids = [azurerm_network_interface.test.id]
   admin_ssh_key {
     username   =  "${var.admin_username}"
-    public_key = "file("~/.ssh/id_rsa.pub")"
+    public_key = file("~/.ssh/id_rsa.pub")
   }
   os_disk {
     caching           = "ReadWrite"
