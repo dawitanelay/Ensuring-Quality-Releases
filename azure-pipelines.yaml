@@ -1,7 +1,7 @@
 name: Azure Pipeline
 
 variables:
-  - group: azure-secret
+  - group: azure_secret
 
 stages:
   - stage: Provision
@@ -11,10 +11,10 @@ stages:
         pool: myAgentPool
         steps:
         - task: DownloadSecureFile@1
-          displayName: Download azure-secret.conf file
-          name: azure-secret
+          displayName: Download azure_secret.conf file
+          name: azure_secret
           inputs:
-            secureFile: 'azure-secret.conf' 
+            secureFile: 'azure_secret.conf' 
         - task: InstallSSHKey@0
           displayName: Install SSH Key
           inputs:
