@@ -14,7 +14,7 @@ stages:
           displayName: Download azure-secret.conf file
           name: azure-secret
           inputs:
-            secureFile: 'azure-secret.conf'
+            secureFile: 'azure-secret.conf' 
         - task: InstallSSHKey@0
           displayName: Install SSH Key
           inputs:
