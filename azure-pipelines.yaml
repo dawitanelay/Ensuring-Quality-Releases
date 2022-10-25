@@ -1,73 +1,76 @@
-name: Azure Pipelines
-
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-trigger:
-- main
-
-# ToDo: Replace the agent pool name, if you are using Udacity Cloud lab. 
-# Otherwise comment out the line below. 
-pool: myAgentPool
+name: Azure Pipeline
 
 variables:
-  python.version: '3.7.6'
-  # ToDo: Replace the service connection name as used in the DevOps project settings
-  azureServiceConnectionId: 'project2-service-con'
-  # Project root folder. Point to the folder containing manage.py file.
-  projectRoot: $(System.DefaultWorkingDirectory)
-  # Environment name
-  environmentName: 'test'
+  - group: azure-secret
 
 stages:
-- stage: Build
-  jobs:
-  - job: BuildInfrastructure
-    steps:
-    # Install Terraform on the pipeline agent 
-    - task: TerraformInstaller@0
-      displayName: 'Terrafom installation'
-      inputs:
-        terraformVersion: '1.2.9'
-    
-    # Run Terraform Init on the pipeline agent 
-    # ToDo: Replace the resource group name, storage account name, and container name below
-    - task: TerraformTaskV3@3
-      displayName: 'Terrafom init'
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        backendServiceArm: '$(azureServiceConnectionId)'
-        backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate7869151'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'test.terraform.tfstate'
+  - stage: Provision
+    jobs:
+      - job: TerrafromTasks
+        displayName: Terraform Tasks
+        pool: myAgentPool
+        steps:
+        - task: DownloadSecureFile@1
+          displayName: Download azure-secret.conf file
+          name: azure-secret
+          inputs:
+            secureFile: 'azure-secret.conf'
+        - task: InstallSSHKey@0
+          displayName: Install SSH Key
+          inputs:
+            knownHostsEntry: 'known_hosts'
+            sshPublicKey: '$(public_key)'
+            sshKeySecureFile: 'id_rsa'
+            
+        - task: TerraformInstaller@0
+          displayName: Install terraform
+          inputs:
+            terraformVersion: 'latest'
 
-    # Run Terraform Validate    
-    - task: TerraformTaskV3@3
-      displayName: Terraform validate
-      inputs:
-        provider: 'azurerm'
-        command: 'validate'
-
-    
-    # Run Terraform Apply
-    # ToDo: Change the workingDirectory path, as applicable to you
-    - task: TerraformTaskV3@3
-      displayName: Terraform apply
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-
-    # Destroy the resources in Azure
-    # ToDo: Change the workingDirectory path, as applicable to you
-    - task: TerraformTaskV3@3
-      displayName: Terraform destroy
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'        
+        - task: TerraformCLI@0
+          displayName: Terraform Init
+          inputs:
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
+            commandOptions: '-backend-config=$(azsecret.secureFilePath)'
+            backendType: 'azurerm'
+            backendServiceArm: 'service-connection-azurerm'
+            backendAzureRmResourceGroupName: 'Azuredevops'
+            backendAzureRmStorageAccountName: 'tfstate7869151'
+            backendAzureRmContainerName: 'tfstate'
+            allowTelemetryCollection: true
+          
+        - task: TerraformCLI@0
+          displayName: Terraform Validate
+          inputs:
+            command: 'validate'
+            allowTelemetryCollection: true    
+        
+        - task: AzureCLI@1
+          displayName: Set Environment Variables for Terraform
+          inputs:
+            azureSubscription: service-connection-azurerm
+            scriptLocation: inlineScript
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
+            addSpnToEnvironment: true
+            inlineScript: |
+                export ARM_CLIENT_ID=$(client_id)
+                export ARM_CLIENT_SECRET=$(client_secret)
+                export ARM_SUBSCRIPTION_ID=$(subscription_id)
+                export ARM_TENANT_ID=$(tenant_id)
+          
+        - task: TerraformCLI@0
+          displayName: 'Terraform Plan'
+          inputs:        
+              command: 'plan'
+              environmentServiceName: 'project2-service-con'
+              allowTelemetryCollection: true
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
+              
+        - task: TerraformCLI@0
+          displayName: Terraform Apply
+          inputs:
+            command: 'apply'
+            environmentServiceName: 'project2-service-con'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
+            allowTelemetryCollection: true
