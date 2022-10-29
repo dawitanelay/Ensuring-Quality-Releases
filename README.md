@@ -1,10 +1,10 @@
-# Project Starter
-This repository contains the starter code for the **Ensuring Quality Releases** project of the cd1807 Ensuring Quality Releases (Quality Assurance) course taught by Nathan Anderson. 
-
-
-## How to use?
-- Fork this repository to your Github account and clone it locally for further development. 
-- Follow the classroom instructions, and check the rubric before a submission. 
-
-## Suggestions and Corrections
-Feel free to submit PRs to this repo should you have any proposed changes. 
+## Architectural Diagram
+![alt text](diagram.png)
+## Dependencies
+1. Azure DevOps
+2. Install latest version [Terraform](https://www.terraform.io/downloads.html)
+3. Install  latest version [JMeter](https://jmeter.apache.org/download_jmeter.cgi)
+4. Install latest version [Postman](https://www.postman.com/downloads/)
+5. Install latest version [Selenium](https://sites.google.com/a/chromium.org/chromedriver/getting-started)
+6. Python
+7. Install  latest version  [Azure command line interface](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
