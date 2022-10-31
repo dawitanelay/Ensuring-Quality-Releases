@@ -8,3 +8,7 @@
 5. Install latest version [Selenium](https://sites.google.com/a/chromium.org/chromedriver/getting-started)
 6. Python
 7. Install  latest version  [Azure command line interface](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+
+## Output
+### BuildInfrastructure
+![Terraform output](./Screenshot/BuildInfrastructer.png)
