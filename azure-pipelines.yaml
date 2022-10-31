@@ -48,12 +48,7 @@ stages:
         backendAzureRmKey: 'test.terraform.tfstate'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
 
-       # Run Terraform Validate
-    - task: TerraformCLI@0
-        displayName: Terraform Validate
-        inputs:
-          command: 'validate'
-          allowTelemetryCollection: true
+
 
 
     - task: AzureCLI@1
