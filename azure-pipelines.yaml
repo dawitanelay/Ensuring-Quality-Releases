@@ -76,3 +76,4 @@ stages:
             command: 'apply'
             environmentServiceName: 'myServiceConnection'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
+            allowTelemetryCollection: true
