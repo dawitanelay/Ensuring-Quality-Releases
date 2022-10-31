@@ -91,14 +91,14 @@ stages:
             allowTelemetryCollection: true
 
 
-     # Destroy the resources in Azure
-    - task: TerraformCLI@0
-      displayName: Terraform destroy
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: '$(myServiceConnection)'
+    #  # Destroy the resources in Azure
+    # - task: TerraformCLI@0
+    #   displayName: Terraform destroy
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'destroy'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #     environmentServiceNameAzureRM: '$(myServiceConnection)'
 
 - stage: Build
   jobs:
