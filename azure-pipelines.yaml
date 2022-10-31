@@ -48,7 +48,7 @@ stages:
         backendAzureRmKey: 'test.terraform.tfstate'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
 
-  
+
          # Run Terraform Validate
     - task: TerraformCLI@0
       displayName: Terraform Validate
@@ -75,5 +75,5 @@ stages:
             provider: 'azurerm'
             command: 'apply'
             environmentServiceName: 'myServiceConnection'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Ensuring-Quality-Releases/terraform/environment/test'
             allowTelemetryCollection: true
