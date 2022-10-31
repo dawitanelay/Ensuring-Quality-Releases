@@ -21,7 +21,7 @@ stages:
               knownHostsEntry: known_hosts
               sshPublicKey: $(public_key)
               sshKeySecureFile: id_rsa
-          - task: TerraformInstaller@0
+          - task: TerraformInstaller
             displayName: Installtion
             inputs:
               terraformVersion: latest
