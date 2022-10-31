@@ -72,9 +72,9 @@ stages:
             export ARM_SUBSCRIPTION_ID=$(subscription_id)
             export ARM_TENANT_ID=$(tenant_id)
     #Terraform plan
-  - task: TerraformCLI@0
-    displayName: 'Terraform Plan'
-    inputs:
+    - task: TerraformCLI@0
+      displayName: 'Terraform Plan'
+      inputs:
           command: 'plan'
           environmentServiceName: 'myServiceConnection'
           allowTelemetryCollection: true
