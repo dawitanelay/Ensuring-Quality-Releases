@@ -7,12 +7,12 @@ trigger:
 - main
 
 stages:
-- stage: Infrastructure
+- stage: Build
   jobs:
   - job:  BuildInfrastructure
     displayName: BuildInfrastructure
     pool: myAgentPool
-
+   #downloads azure secureFile
     steps:
     - task: DownloadSecureFile@1
       displayName: Downloading azure conf file
@@ -88,3 +88,12 @@ stages:
             environmentServiceName: 'myServiceConnection'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
             allowTelemetryCollection: true
+
+     # Destroy the resources in Azure
+    - task: TerraformCLI@0
+      displayName: Terraform destroy
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
