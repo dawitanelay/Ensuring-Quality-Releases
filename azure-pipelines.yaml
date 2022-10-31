@@ -90,16 +90,7 @@ stages:
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
             allowTelemetryCollection: true
 
-<<<<<<< HEAD
-     # Destroy the resources in Azure
-    - task: TerraformCLI@0
-      displayName: Terraform Destroy
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-=======
+
     #  # Destroy the resources in Azure
     # - task: TerraformCLI@0
     #   displayName: Terraform destroy
@@ -108,4 +99,4 @@ stages:
     #     command: 'destroy'
     #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
     #     environmentServiceNameAzureRM: '$(myServiceConnection)'
->>>>>>> 3b8a8f57fa4ea421d8cce3a0334c70957fcabd63
+
