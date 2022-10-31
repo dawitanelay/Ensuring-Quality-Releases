@@ -9,7 +9,7 @@ trigger:
 stages:
 - stage: Infrastructure
   jobs:
-  - job: TerraformTasks
+  - job:  BuildInfrastructure
     displayName: Terraform
     pool: myAgentPool
 
@@ -72,7 +72,7 @@ stages:
     - task: TerraformCLI@0
       displayName: Terraform Apply
       inputs:
+            provider: 'azurerm'
             command: 'apply'
             environmentServiceName: 'myServiceConnection'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
-            allowTelemetryCollection: true
