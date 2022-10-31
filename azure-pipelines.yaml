@@ -10,7 +10,7 @@ stages:
 - stage: Infrastructure
   jobs:
   - job:  BuildInfrastructure
-    displayName: Terraform
+    displayName: BuildInfrastructure
     pool: myAgentPool
 
     steps:
@@ -32,21 +32,24 @@ stages:
     - task: TerraformInstaller@0
       displayName:  Installtion
       inputs:
-        terraformVersion: '1.2.9'
+        terraformVersion: 'latest'
 
     #Terraform Init
     - task: TerraformCLI@0
-      displayName:  Initiation
+      displayName:  Terraform Init
       inputs:
-        provider: 'azurerm'
+
         command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         commandOptions: '-backend-config=$(azureCredentials.secureFilePath)'
+        backendType: 'azurerm'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
         backendAzureRmStorageAccountName: 'tfstate1830418864'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        allowTelemetryCollection: true
+
 
 
          # Run Terraform Validate
@@ -68,6 +71,14 @@ stages:
             export ARM_CLIENT_SECRET=$(client_secret)
             export ARM_SUBSCRIPTION_ID=$(subscription_id)
             export ARM_TENANT_ID=$(tenant_id)
+    #Terraform plan
+  - task: TerraformCLI@0
+          displayName: 'Terraform Plan'
+          inputs:
+              command: 'plan'
+              environmentServiceName: 'myServiceConnection'
+              allowTelemetryCollection: true
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
     #Terraform Apply
     - task: TerraformCLI@0
       displayName: Terraform Apply
@@ -75,5 +86,5 @@ stages:
             provider: 'azurerm'
             command: 'apply'
             environmentServiceName: 'myServiceConnection'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/Ensuring-Quality-Releases/terraform/environment/test'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
             allowTelemetryCollection: true
