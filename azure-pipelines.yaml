@@ -7,7 +7,7 @@ trigger:
 - main
 
 stages:
-- stage: Build
+- stage: Infrastructure
   jobs:
   - job:  BuildInfrastructure
     displayName: BuildInfrastructure
