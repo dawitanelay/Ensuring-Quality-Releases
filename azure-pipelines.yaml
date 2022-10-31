@@ -59,7 +59,7 @@ stages:
     - task: AzureCLI@1
       displayName:  Environment Variables
       inputs:
-        azureSubscription: azureCredentials
+        azureSubscription: myServiceConnection
         scriptLocation: inlineScript
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         addSpnToEnvironment: true
