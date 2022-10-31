@@ -1,73 +1,63 @@
 name: Azure Pipeline
-
 variables:
- - group: azureCredentials
-
+  - group: azureCredentials
 trigger:
-- main
-
+  - main
 stages:
-- stage: Infrastructure
-  jobs:
-  - job: TerraformTasks
-    displayName: Terraform
-    pool: myAgentPool
-
-    steps:
-    - task: DownloadSecureFile@1
-      displayName: Downloading azure conf file
-      name: azureCredentials
-      inputs:
-        secureFile: 'azureCredentials.conf'
-
-    # Install SSH Key for VM
-    - task: InstallSSHKey@0
-      displayName: Installing SSH key
-      inputs:
-        knownHostsEntry: 'known_hosts'
-        sshPublicKey: $(public_key)
-        sshKeySecureFile: 'id_rsa'
-
-    #Terraform Install
-    - task: TerraformInstaller@0
-      displayName:  Installtion
-      inputs:
-        terraformVersion: 'latest'
-
-    #Terraform Init
-    - task: TerraformTaskV2@2
-      displayName:  Initiation
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        commandOptions: '-backend-config=$(azureCredentials.secureFilePath)'
-        backendServiceArm: 'myServiceConnection'
-        backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate281845088'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'test.terraform.tfstate'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-
-
-
-
-    - task: AzureCLI@1
-      displayName:  Environment Variables
-      inputs:
-        azureSubscription: azureCredentials
-        scriptLocation: inlineScript
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        addSpnToEnvironment: true
-        inlineScript: |
-            export ARM_CLIENT_ID=$(client_id)
-            export ARM_CLIENT_SECRET=$(client_secret)
-            export ARM_SUBSCRIPTION_ID=$(subscription_id)
-            export ARM_TENANT_ID=$(tenant_id)
-    #Terraform Apply
-   - task: TerraformCLI@0
-          displayName: Terraform Apply
-          inputs:
-            command: 'apply'
-            environmentServiceName: 'myServiceConnection'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
-            allowTelemetryCollection: true
+  - stage: Infrastructure
+    jobs:
+      - job: TerraformTasks
+        displayName: Terraform
+        pool: myAgentPool
+        steps:
+          - task: DownloadSecureFile@1
+            displayName: Downloading azure conf file
+            name: azureCredentials
+            inputs:
+              secureFile: azureCredentials.conf
+          - task: InstallSSHKey@0
+            displayName: Installing SSH key
+            inputs:
+              knownHostsEntry: known_hosts
+              sshPublicKey: $(public_key)
+              sshKeySecureFile: id_rsa
+          - task: TerraformInstaller@0
+            displayName: Installtion
+            inputs:
+              terraformVersion: latest
+          - task: TerraformTaskV2@2
+            displayName: Initiation
+            inputs:
+              provider: azurerm
+              command: init
+              commandOptions: '-backend-config=$(azureCredentials.secureFilePath)'
+              backendServiceArm: myServiceConnection
+              backendAzureRmResourceGroupName: Azuredevops
+              backendAzureRmStorageAccountName: tfstate281845088
+              backendAzureRmContainerName: tfstate
+              backendAzureRmKey: test.terraform.tfstate
+              workingDirectory: $(System.DefaultWorkingDirectory)/terraform/environments/test
+          - task: TerraformCLI@0
+            displayName: Terraform Validate
+            inputs:
+              command: validate
+              allowTelemetryCollection: true
+          - task: AzureCLI@1
+            displayName: Environment Variables
+            inputs:
+              azureSubscription: azureCredentials
+              scriptLocation: inlineScript
+              workingDirectory: $(System.DefaultWorkingDirectory)/terraform/environments/test
+              addSpnToEnvironment: true
+              inlineScript: |
+                export ARM_CLIENT_ID=$(client_id)
+                export ARM_CLIENT_SECRET=$(client_secret)
+                export ARM_SUBSCRIPTION_ID=$(subscription_id)
+                export ARM_TENANT_ID=$(tenant_id)
+          - task: TerraformCLI@0
+            displayName: Terraform Apply
+            inputs:
+              command: apply
+              environmentServiceName: myServiceConnection
+              workingDirectory: $(System.DefaultWorkingDirectory)/terraform/environment/test
+              allowTelemetryCollection: true
