@@ -21,11 +21,11 @@ stages:
               knownHostsEntry: known_hosts
               sshPublicKey: $(public_key)
               sshKeySecureFile: id_rsa
-          - task: TerraformInstaller
+          - task: TerraformInstaller@0
             displayName: Installtion
             inputs:
               terraformVersion: latest
-          - task: TerraformTaskV2@2
+          - task: TerraformCLI@0
             displayName: Initiation
             inputs:
               provider: azurerm
