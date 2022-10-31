@@ -79,7 +79,7 @@ stages:
           command: 'plan'
           environmentServiceName: 'myServiceConnection'
           allowTelemetryCollection: true
-          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test' 
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
     #Terraform Apply
     - task: TerraformCLI@0
       displayName: Terraform Apply
@@ -92,7 +92,7 @@ stages:
 
      # Destroy the resources in Azure
     - task: TerraformCLI@0
-      displayName: Terraform destroy
+      displayName: Terraform Destroy
       inputs:
         provider: 'azurerm'
         command: 'destroy'
