@@ -71,6 +71,7 @@ stages:
             export ARM_CLIENT_SECRET=$(client_secret)
             export ARM_SUBSCRIPTION_ID=$(subscription_id)
             export ARM_TENANT_ID=$(tenant_id)
+            echo $(System.DefaultWorkingDirectory)
     #Terraform plan
     - task: TerraformCLI@0
       displayName: 'Terraform Plan'
@@ -78,7 +79,7 @@ stages:
           command: 'plan'
           environmentServiceName: 'myServiceConnection'
           allowTelemetryCollection: true
-          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test' 
     #Terraform Apply
     - task: TerraformCLI@0
       displayName: Terraform Apply
@@ -86,7 +87,7 @@ stages:
             provider: 'azurerm'
             command: 'apply'
             environmentServiceName: 'myServiceConnection'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environment/test'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
             allowTelemetryCollection: true
 
      # Destroy the resources in Azure
