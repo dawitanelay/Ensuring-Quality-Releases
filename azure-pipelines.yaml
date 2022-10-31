@@ -32,7 +32,7 @@ stages:
     - task: TerraformInstaller@0
       displayName:  Installtion
       inputs:
-        terraformVersion: 'latest'
+        terraformVersion: '1.2.9'
 
     #Terraform Init
     - task: TerraformCLI@0
@@ -48,6 +48,10 @@ stages:
         backendAzureRmKey: 'test.terraform.tfstate'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
 
+    - task: TerraformCLI@0
+      displayName: Import resource_group
+      inputs:
+        command: 'terraform import azurerm_resource_group.test /subscriptions/0ee6d06f-69ab-4b3b-9f35-003e1b6eb227/resourceGroups/Azuredevops'
 
          # Run Terraform Validate
     - task: TerraformCLI@0
