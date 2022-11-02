@@ -159,7 +159,7 @@ stages:
                 inputs:
                   ConnectionType: 'AzureRM'
                   azureSubscription: 'myServiceConnection'
-                  appType: 'webApp'
+                  appType: webApp
                   appName: 'udacityAppService-AppService'
                   packageForLinux: '$(Pipeline.Workspace)/drop-fakerestapi/fakerestapi-$(Build.BuildId).zip'
                   DeploymentType: zipDeploy 
@@ -188,4 +188,14 @@ stages:
                     AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(la_primary_key)
                   displayName: Configure VM  
                 
+                - task: ExtractFiles@1
+                  displayName: 'Copy Selenium Archive to VM'
+                  inputs:
+                    archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
+                    destinationFolder: '$(System.DefaultWorkingDirectory)/Selenium'
+                    cleanDestinationFolder: true
+                    overwriteExistingFiles: true
+
+            
+                  
                   
