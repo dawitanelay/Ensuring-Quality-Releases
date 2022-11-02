@@ -7,7 +7,7 @@ trigger:
 - main
 
 stages:
-- stage: Infrastructure
+- stage: Build
   jobs:
   - job:  BuildInfrastructure
     displayName: BuildInfrastructure
@@ -45,7 +45,7 @@ stages:
         backendType: 'azurerm'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate1830418864'
+        backendAzureRmStorageAccountName: 'tfstate508432416'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
         allowTelemetryCollection: true
@@ -90,7 +90,6 @@ stages:
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
             allowTelemetryCollection: true
 
-
     #  # Destroy the resources in Azure
     # - task: TerraformCLI@0
     #   displayName: Terraform destroy
@@ -99,49 +98,3 @@ stages:
     #     command: 'destroy'
     #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
     #     environmentServiceNameAzureRM: '$(myServiceConnection)'
-
-- stage: Build
-  jobs:
-      - job: Build_Artifacts
-        displayName: Build Artifacts
-        pool: myAgentPool
-        steps:
-          - task: ArchiveFiles@2
-            displayName: Archive Fakerestapi
-            inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
-          
-          - task: PublishPipelineArtifact@1
-            displayName: Publish Fakerestapi as Artifact
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
-              artifactName: 'drop-fakerestapi'
-              
-          - task: ArchiveFiles@2
-            displayName: Archive Selenium
-            inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
-          - task: PublishPipelineArtifact@1
-            displayName: Publish Selenium Artifact
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
-              artifactName: 'drop-selenium'
-
-          - task: ArchiveFiles@2
-            displayName: 'Archive PerformanceTestSuite'
-            inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/jtest-$(Build.BuildId).zip'
-          - task: PublishBuildArtifacts@1
-            displayName: Publish Jmeter test
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/jtest-$(Build.BuildId).zip'
-              ArtifactName: 'drop-jtest'
