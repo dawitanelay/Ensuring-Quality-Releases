@@ -1,0 +1,88 @@
+name: Azure Pipeline
+
+variables:
+ - group: azureCredentials
+
+variables:
+  python.version: '3.7.6'
+  # ToDo: Replace the service connection name as used in the DevOps project settings
+  azureServiceConnectionId: 'myServiceConnection'
+  # Project root folder. Point to the folder containing manage.py file.
+  projectRoot: $(System.DefaultWorkingDirectory)
+  # Environment name
+  environmentName: 'TEST'
+
+trigger:
+- main
+
+stages:
+#--------------------------------------------#
+# BUILD STAGE
+#--------------------------------------------#
+- stage: Build
+  jobs:
+  - job: BuildInfrastructure
+    displayName: BuildInfrastructure
+    pool: myAgentPool
+    steps:
+    - task: DownloadSecureFile@1
+      displayName: Downloading azure conf file
+      name: azureCredentials
+      inputs:
+        secureFile: 'azureCredentials.conf'
+    # Install SSH Key for VM
+    - task: InstallSSHKey@0
+      displayName: Installing SSH key
+      inputs:
+        knownHostsEntry: 'known_hosts'
+        sshPublicKey: $(public_key)
+        sshKeySecureFile: 'id_rsa'
+    #--------------------------------------------#
+    # Use Terraform to create the Infrastructure
+    # Install Terraform on the pipeline agent
+    - task: TerraformInstaller@0
+      displayName:  Installtion
+      inputs:
+        terraformVersion: 'latest'
+
+    # Run Terraform Init on the pipeline agent
+    # ToDo: Replace the resource group name, storage account name, and container name below
+    - task: TerraformTaskV3@3
+      displayName: 'Terrafom init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        backendServiceArm: '$(azureServiceConnectionId)'
+        backendAzureRmResourceGroupName: 'Azuredevops'
+        backendAzureRmStorageAccountName: 'tfstate230352213'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'test.terraform.tfstate'
+
+    # ToDo: Run Terraform Validate
+    - task: TerraformTaskV3@3
+      displayName: Terraform validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+
+
+    # Run Terraform Apply
+    # ToDo: Change the workingDirectory path, as applicable to you
+    - task: TerraformTaskV3@3
+      displayName: Terraform apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+
+    # ToDo: Change the workingDirectory path, as applicable to you
+    # Destroy the resources in Azure by running a separate pipeline.
+    # - task: TerraformTaskV3@3
+    #   displayName: Terraform destroy
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'destroy'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
