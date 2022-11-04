@@ -2,13 +2,7 @@ name: Azure Pipeline
 
 variables:
  - group: azureCredentials
-   python.version: '3.7.6'
-  # ToDo: Replace the service connection name as used in the DevOps project settings
-   azureServiceConnectionId: 'myServiceConnection'
-  # Project root folder. Point to the folder containing manage.py file.
-   projectRoot: $(System.DefaultWorkingDirectory)
-  # Environment name
-   environmentName: 'TEST'
+
 
 trigger:
 - main
@@ -41,7 +35,7 @@ stages:
     - task: TerraformInstaller@0
       displayName:  Installtion
       inputs:
-        terraformVersion: 'latest'
+        terraformVersion: '1.2.9'
 
     # Run Terraform Init on the pipeline agent
     # ToDo: Replace the resource group name, storage account name, and container name below
