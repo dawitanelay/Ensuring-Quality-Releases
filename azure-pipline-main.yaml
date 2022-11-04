@@ -3,25 +3,23 @@ name: Azure Pipeline
 variables:
  - group: azureCredentials
 
-
 trigger:
 - main
 
 stages:
-#--------------------------------------------#
-# BUILD STAGE
-#--------------------------------------------#
-- stage: Build
+- stage: Infrastructure
   jobs:
-  - job: BuildInfrastructure
+  - job:  BuildInfrastructure
     displayName: BuildInfrastructure
     pool: myAgentPool
+   #downloads azure secureFile
     steps:
     - task: DownloadSecureFile@1
       displayName: Downloading azure conf file
       name: azureCredentials
       inputs:
         secureFile: 'azureCredentials.conf'
+
     # Install SSH Key for VM
     - task: InstallSSHKey@0
       displayName: Installing SSH key
@@ -29,52 +27,65 @@ stages:
         knownHostsEntry: 'known_hosts'
         sshPublicKey: $(public_key)
         sshKeySecureFile: 'id_rsa'
-    #--------------------------------------------#
-    # Use Terraform to create the Infrastructure
-    # Install Terraform on the pipeline agent
+
+    #Terraform Install
     - task: TerraformInstaller@0
       displayName:  Installtion
       inputs:
-        terraformVersion: '1.2.9'
+        terraformVersion: 'latest'
 
-    # Run Terraform Init on the pipeline agent
-    # ToDo: Replace the resource group name, storage account name, and container name below
-    - task: TerraformTaskV3@3
-      displayName: 'Terrafom init'
+    #Terraform Init
+    - task: TerraformCLI@0
+      displayName:  Terraform Init
       inputs:
-        provider: 'azurerm'
+
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        commandOptions: '-backend-config=$(azureCredentials.secureFilePath)'
+        backendType: 'azurerm'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
         backendAzureRmStorageAccountName: 'tfstate230352213'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
+        allowTelemetryCollection: true
 
-    # ToDo: Run Terraform Validate
-    - task: TerraformTaskV3@3
-      displayName: Terraform validate
+
+
+         # Run Terraform Validate
+    - task: TerraformCLI@0
+      displayName: Terraform Validate
       inputs:
-        provider: 'azurerm'
-        command: 'validate'
+          command: 'validate'
+          allowTelemetryCollection: true
 
-
-    # Run Terraform Apply
-    # ToDo: Change the workingDirectory path, as applicable to you
-    - task: TerraformTaskV3@3
-      displayName: Terraform apply
+    - task: AzureCLI@1
+      displayName:  Environment Variables
       inputs:
-        provider: 'azurerm'
-        command: 'apply'
+        azureSubscription: myServiceConnection
+        scriptLocation: inlineScript
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: 'myServiceConnection'
-
-    # ToDo: Change the workingDirectory path, as applicable to you
-    # Destroy the resources in Azure by running a separate pipeline.
-    # - task: TerraformTaskV3@3
-    #   displayName: Terraform destroy
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'destroy'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+        addSpnToEnvironment: true
+        inlineScript: |
+            export ARM_CLIENT_ID=$(client_id)
+            export ARM_CLIENT_SECRET=$(client_secret)
+            export ARM_SUBSCRIPTION_ID=$(subscription_id)
+            export ARM_TENANT_ID=$(tenant_id)
+            echo $(System.DefaultWorkingDirectory)
+    #Terraform plan
+    - task: TerraformCLI@0
+      displayName: 'Terraform Plan'
+      inputs:
+          command: 'plan'
+          environmentServiceName: 'myServiceConnection'
+          allowTelemetryCollection: true
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #Terraform Apply
+    - task: TerraformCLI@0
+      displayName: Terraform Apply
+      inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            environmentServiceName: 'myServiceConnection'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+            allowTelemetryCollection: true
