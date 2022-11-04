@@ -3,8 +3,6 @@ name: Azure Pipeline
 variables:
  - group: azureCredentials
 
-
-
 trigger:
 - main
 
@@ -40,7 +38,7 @@ stages:
 
     # Run Terraform Init on the pipeline agent
     #Terraform Init
-     - task: TerraformTaskV3@3
+    - task: TerraformTaskV3@3
       displayName: 'Terrafom init'
       inputs:
         provider: 'azurerm'
