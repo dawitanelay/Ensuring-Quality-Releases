@@ -34,7 +34,7 @@ stages:
     - task: TerraformInstaller@0
       displayName: 'Terrafom installation'
       inputs:
-        terraformVersion: '1.2.9'
+        terraformVersion: 'latest'
 
     # Run Terraform Init on the pipeline agent
     #Terraform Init
