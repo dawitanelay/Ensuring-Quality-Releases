@@ -45,7 +45,7 @@ stages:
         backendType: 'azurerm'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate508432416'
+        backendAzureRmStorageAccountName: 'tfstate230352213'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
         allowTelemetryCollection: true
@@ -111,13 +111,13 @@ stages:
               includeRootFolder: false
               archiveType: 'zip'
               archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
-          
+
           - task: PublishPipelineArtifact@1
             displayName: Publish Fakerestapi as Artifact
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
               artifactName: 'drop-fakerestapi'
-              
+
           - task: ArchiveFiles@2
             displayName: Archive Selenium
             inputs:
@@ -144,7 +144,7 @@ stages:
               targetPath: '$(Build.ArtifactStagingDirectory)/jtest-$(Build.BuildId).zip'
               ArtifactName: 'drop-jtest'
 
-- stage: Deploy 
+- stage: Deploy
   jobs:
       - deployment: FakeRestAPI
         displayName: Deploy FakeRestAPI
@@ -162,7 +162,7 @@ stages:
                   appType: 'webApp'
                   WebAppName: 'udacityAppService-AppService'
                   packageForLinux: '$(Pipeline.Workspace)/drop-fakerestapi/fakerestapi-$(Build.BuildId).zip'
-                  DeploymentType: zipDeploy 
+                  DeploymentType: zipDeploy
 
       - deployment: VMDeploy
         displayName: Deploy Virtual Machine
@@ -183,11 +183,11 @@ stages:
                     pip3 install selenium
                     pip3 install --upgrade pip
                     export PATH=$PATH:'usr/bin'
-                  env: 
+                  env:
                     AZURE_LOG_ANALYTICS_ID: $(la_workspace_id)
                     AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(la_primary_key)
-                  displayName: Configure VM  
-                
+                  displayName: Configure VM
+
                 # - task: ExtractFiles@1
                 #   displayName: 'Copy Selenium Archive to VM'
                 #   inputs:
@@ -195,7 +195,3 @@ stages:
                 #     destinationFolder: '$(System.DefaultWorkingDirectory)/Selenium'
                 #     cleanDestinationFolder: true
                 #     overwriteExistingFiles: true
-
-            
-                  
-                  

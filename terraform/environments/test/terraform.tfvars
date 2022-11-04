@@ -1,13 +1,13 @@
 # Azure subscription vars
-subscription_id = "82c40d1f-be09-4c9e-9295-ae70e625b7b5"
-client_id = "77060396-99cd-47f3-952b-4ad5bf7a0ee0"
-client_secret = "0_r8Q~4T.J6MGR9zAR-E1KBHpmcxyN6Y_nvDra.9"
+subscription_id = "ae905fde-e5ea-40f0-a6db-35397678cc4c"
+client_id = "34213553-729f-4379-b448-20107091d3e9"
+client_secret = "PWk8Q~2ChD1.JDVfgzUIHrCCz576Qo4VoMughb99"
 tenant_id = "f958e84a-92b8-439f-a62d-4f45996b6d07"
 
 # Resource Group/Location
 location = "South Central US"
 resource_group = "Azuredevops"
-application_type = "udacityAppService"
+application_type = "udacity"
 
 # Network
 virtual_network_name = "udacity-vnet"
