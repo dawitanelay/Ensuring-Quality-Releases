@@ -160,7 +160,7 @@ stages:
                   ConnectionType: 'AzureRM'
                   azureSubscription: 'myServiceConnection'
                   appType: 'webApp'
-                  WebAppName: 'udacityAppService-AppService'
+                  WebAppName: 'udacity-AppService'
                   packageForLinux: '$(Pipeline.Workspace)/drop-fakerestapi/fakerestapi-$(Build.BuildId).zip'
                   DeploymentType: zipDeploy
 
