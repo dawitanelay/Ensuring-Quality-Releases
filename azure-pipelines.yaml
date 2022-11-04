@@ -90,14 +90,7 @@ stages:
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
             allowTelemetryCollection: true
 
-    #  # Destroy the resources in Azure
-    # - task: TerraformCLI@0
-    #   displayName: Terraform destroy
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'destroy'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     environmentServiceNameAzureRM: '$(myServiceConnection)'
+  
 - stage: Build
   jobs:
       - job: Build_Artifacts
@@ -110,12 +103,12 @@ stages:
               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
               includeRootFolder: false
               archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
 
           - task: PublishPipelineArtifact@1
             displayName: Publish Fakerestapi as Artifact
             inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
               artifactName: 'drop-fakerestapi'
 
           - task: ArchiveFiles@2
@@ -124,11 +117,11 @@ stages:
               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
               includeRootFolder: false
               archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium Artifact
             inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
               artifactName: 'drop-selenium'
 
           - task: ArchiveFiles@2
@@ -137,11 +130,11 @@ stages:
               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
               includeRootFolder: false
               archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/jtest-$(Build.BuildId).zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-jtest-.zip'
           - task: PublishBuildArtifacts@1
             displayName: Publish Jmeter test
             inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/jtest-$(Build.BuildId).zip'
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-jtest.zip'
               ArtifactName: 'drop-jtest'
 
 - stage: Deploy
@@ -154,13 +147,13 @@ stages:
           runOnce:
             deploy:
               steps:
-              - task: AzureRmWebAppDeployment@4
+              - task: AzureWebApp@1
                 displayName: 'Deploy Azure Web App'
                 inputs:
                   ConnectionType: 'AzureRM'
                   azureSubscription: 'myServiceConnection'
                   appType: 'webApp'
-                  WebAppName: 'udacityAppService-AppService'
+                  AppName: 'udacityAppService-AppService'
                   packageForLinux: '$(Pipeline.Workspace)/drop-fakerestapi/fakerestapi-$(Build.BuildId).zip'
                   DeploymentType: zipDeploy
 
