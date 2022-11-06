@@ -156,6 +156,7 @@ stages:
                   DeploymentType: zipDeploy
       - deployment: VMDeploy
         displayName: 'Deploy Virtual Machine'
+        pool: myAgentPool
         environment: 'TEST'
         strategy:
           runOnce:
