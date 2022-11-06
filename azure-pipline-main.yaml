@@ -3,8 +3,6 @@ name: Azure Pipeline
 variables:
  - group: azureCredentials
 
-
-
 trigger:
 - main
 
@@ -36,11 +34,11 @@ stages:
     - task: TerraformInstaller@0
       displayName: 'Terrafom installation'
       inputs:
-        terraformVersion: '1.2.9'
+        terraformVersion: 'latest'
 
     # Run Terraform Init on the pipeline agent
     #Terraform Init
-     - task: TerraformTaskV3@3
+    - task: TerraformTaskV3@3
       displayName: 'Terrafom init'
       inputs:
         provider: 'azurerm'
@@ -48,7 +46,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate230352213'
+        backendAzureRmStorageAccountName: 'tfstate2066511775'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
     # ToDo: Run Terraform Validate
