@@ -151,44 +151,31 @@ stages:
                   ConnectionType: 'AzureRM'
                   azureSubscription: 'myServiceConnection'
                   appType: 'webApp'
-                  WebAppName: 'codingapp-appservice'
+                  WebAppName: 'udacity-AppService'
                   packageForLinux: '$(Pipeline.Workspace)/drop-fakerestapi/fakerestapi-$(Build.BuildId).zip'
                   DeploymentType: zipDeploy
-
       - deployment: VMDeploy
-        displayName: Deploy Virtual Machine
+        displayName: 'Deploy Virtual Machine'
         environment:
-          name: 'TEST'
-          resourceType: VirtualMachine
+        name:  'DEV'
+        resourceType: VirtualMachine
+        tags: 'codingapp'
         strategy:
-          runOnce:
-            deploy:
-              steps:
-                - bash: |
-                    sudo apt-get update -y
-                    sudo apt-get install python3-pip -y
-                    sudo apt-get install unzip -y
-                    sudo apt-get install -y chromium-browser
-                    sudo apt-get install -y chromium-chromedriver
-                    python3 -m pip install --upgrade pip
-                    pip3 install selenium
-                    pip3 install --upgrade pip
-                    export PATH=$PATH:'usr/bin'
-                    python3 -V
-                    pip3 -V
-                    /usr/bin/chromium-browser --version
-                    /usr/bin/chromedriver --version
-                    python3 -c "import selenium; print('Selenium Version:', selenium.__version__)"
-                    wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com
-                  # env:
-                  #   AZURE_LOG_ANALYTICS_ID: $(la_workspace_id)
-                  #   AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(la_primary_key)
-                  # displayName: Configure VM
-
-                # - task: ExtractFiles@1
-                #   displayName: 'Copy Selenium Archive to VM'
-                #   inputs:
-                #     archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
-                #     destinationFolder: '$(System.DefaultWorkingDirectory)/Selenium'
-                #     cleanDestinationFolder: true
-                #     overwriteExistingFiles: true
+        runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash           
+                sudo apt-get upgrade -y
+                sudo apt-get install unzip -y
+                sudo apt-get install python3  -y
+                sudo apt-get update -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install -y chromium-browser
+                pip3 --version
+                pip3 install selenium
+                pip3 install --upgrade pip
+                export PATH=$PATH:'usr/bin'
