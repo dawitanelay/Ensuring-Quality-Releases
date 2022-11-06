@@ -64,7 +64,7 @@ stages:
 
     # Run Terraform Apply
     # ToDo: Change the workingDirectory path, as applicable to you
-    - task: TerraformCLI@0
+    - task: TerraformTaskV3@3
       displayName: Terraform apply
       inputs:
         provider: 'azurerm'
