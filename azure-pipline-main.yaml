@@ -81,8 +81,8 @@ stages:
     #     command: 'destroy'
     #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
     #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
- - stage: Build
-    jobs:
+- stage: Build
+  jobs:
       - job: Build_Artifacts
         displayName: Build Artifacts
         pool: myAgentPool
