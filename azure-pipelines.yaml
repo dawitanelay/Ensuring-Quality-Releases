@@ -151,7 +151,7 @@ stages:
                   ConnectionType: 'AzureRM'
                   azureSubscription: 'myServiceConnection'
                   appType: 'webApp'
-                  WebAppName: 'udacity-AppService'
+                  WebAppName: 'codingapp-appservice'
                   packageForLinux: '$(Pipeline.Workspace)/drop-fakerestapi/fakerestapi-$(Build.BuildId).zip'
                   DeploymentType: zipDeploy
 
@@ -180,10 +180,10 @@ stages:
                     /usr/bin/chromedriver --version
                     python3 -c "import selenium; print('Selenium Version:', selenium.__version__)"
                     wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com
-                  env:
-                    AZURE_LOG_ANALYTICS_ID: $(la_workspace_id)
-                    AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(la_primary_key)
-                  displayName: Configure VM
+                  # env:
+                  #   AZURE_LOG_ANALYTICS_ID: $(la_workspace_id)
+                  #   AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(la_primary_key)
+                  # displayName: Configure VM
 
                 # - task: ExtractFiles@1
                 #   displayName: 'Copy Selenium Archive to VM'
