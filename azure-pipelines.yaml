@@ -123,6 +123,18 @@ stages:
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
         artifactName: 'drop-selenium'
+    - task: ArchiveFiles@2
+      displayName: 'Archive PerformanceTestSuite'
+      inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/jtest-$(Build.BuildId).zip'
+    - task: PublishBuildArtifacts@1
+      displayName: Publish Jmeter test
+      inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)/jtest-$(Build.BuildId).zip'
+              ArtifactName: 'drop-jtest'  
 
 - stage: Deploy
   jobs:
