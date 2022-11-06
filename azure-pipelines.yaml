@@ -156,9 +156,7 @@ stages:
                   DeploymentType: zipDeploy
       - deployment: VMDeploy
         displayName: 'Deploy Virtual Machine'
-        environment:
-        name:  'TEST'
-        resourceType: VirtualMachine
+        environment: 'TEST'
         strategy:
           runOnce:
              deploy:
