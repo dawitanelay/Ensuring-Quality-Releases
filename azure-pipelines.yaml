@@ -135,7 +135,6 @@ stages:
       inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)/jtest-$(Build.BuildId).zip'
               ArtifactName: 'drop-jtest'  
-
 - stage: Deploy
   jobs:
       - deployment: FakeRestAPI
