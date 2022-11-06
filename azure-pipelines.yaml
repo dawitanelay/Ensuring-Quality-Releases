@@ -157,25 +157,25 @@ stages:
       - deployment: VMDeploy
         displayName: 'Deploy Virtual Machine'
         environment:
-        name:  'DEV'
+        name:  'TEST'
         resourceType: VirtualMachine
-        tags: 'codingapp'
         strategy:
-        runOnce:
-          deploy:
-            steps:
-            - task: Bash@3
-              inputs:
-                targetType: 'inline'
-                script: |
-                  #! /bin/bash           
-                  sudo apt-get upgrade -y
-                  sudo apt-get install unzip -y
-                  sudo apt-get install python3  -y
-                  sudo apt-get update -y
-                  sudo apt-get install python3-pip -y
-                  sudo apt-get install -y chromium-browser
-                  pip3 --version
-                  pip3 install selenium
-                  pip3 install --upgrade pip
-                  export PATH=$PATH:'usr/bin'
+          runOnce:
+             deploy:
+               steps:
+               - task: Bash@3
+                 inputs:
+                   targetType: 'inline'
+                   script: |
+                     #! /bin/bash           
+                     sudo apt-get upgrade -y
+                     sudo apt-get install unzip -y
+                     sudo apt-get install python3  -y
+                     sudo apt-get update -y
+                     sudo apt-get install python3-pip -y
+                     sudo apt-get install -y chromium-browser
+                     pip3 --version
+                     pip3 install selenium
+                     pip3 install --upgrade pip
+                     export PATH=$PATH:'usr/bin'
+            
