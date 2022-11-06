@@ -46,7 +46,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate2066511775'
+        backendAzureRmStorageAccountName: 'tfstate2069818206'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
     # ToDo: Run Terraform Validate
@@ -64,7 +64,7 @@ stages:
 
     # Run Terraform Apply
     # ToDo: Change the workingDirectory path, as applicable to you
-    - task: TerraformTaskV3@3
+    - task: TerraformCLI@0
       displayName: Terraform apply
       inputs:
         provider: 'azurerm'
@@ -81,8 +81,8 @@ stages:
     #     command: 'destroy'
     #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
     #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
- - stage: Build
-    jobs:
+- stage: Build
+  jobs:
       - job: Build_Artifacts
         displayName: Build Artifacts
         pool: myAgentPool
