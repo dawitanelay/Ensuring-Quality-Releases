@@ -1,0 +1,158 @@
+name: Azure Pipeline
+
+variables:
+ - group: azureCredentials
+
+trigger:
+- main
+
+stages:
+- stage: Infrastructure
+  jobs:
+  - job:  BuildInfrastructure
+    displayName: BuildInfrastructure
+    pool: myAgentPool
+   #downloads azure secureFile
+    steps:
+    - task: DownloadSecureFile@1
+      displayName: Downloading azure conf file
+      name: azureCredentials
+      inputs:
+        secureFile: 'azureCredentials.conf'
+
+    # Install SSH Key for VM
+    - task: InstallSSHKey@0
+      displayName: Installing SSH key
+      inputs:
+        knownHostsEntry: 'known_hosts'
+        sshPublicKey: $(public_key)
+        sshKeySecureFile: 'id_rsa'
+
+    #Terraform Install
+    - task: TerraformInstaller@0
+      displayName:  Installtion
+      inputs:
+        terraformVersion: 'latest'
+
+    #Terraform Init
+    - task: TerraformCLI@0
+      displayName:  Terraform Init
+      inputs:
+
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        commandOptions: '-backend-config=$(azureCredentials.secureFilePath)'
+        backendType: 'azurerm'
+        backendServiceArm: 'myServiceConnection'
+        backendAzureRmResourceGroupName: 'Azuredevops'
+        backendAzureRmStorageAccountName: 'tfstate2069818206'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'test.terraform.tfstate'
+        allowTelemetryCollection: true
+
+
+
+         # Run Terraform Validate
+    - task: TerraformCLI@0
+      displayName: Terraform Validate
+      inputs:
+          command: 'validate'
+          allowTelemetryCollection: true
+
+    - task: AzureCLI@1
+      displayName:  Set Environment Variables for Terraform
+      inputs:
+        azureSubscription: myServiceConnection
+        scriptLocation: inlineScript
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        addSpnToEnvironment: true
+        inlineScript: |
+            export ARM_CLIENT_ID=$(client_id)
+            export ARM_CLIENT_SECRET=$(client_secret)
+            export ARM_SUBSCRIPTION_ID=$(subscription_id)
+            export ARM_TENANT_ID=$(tenant_id)
+            echo $(System.DefaultWorkingDirectory)
+    #Terraform plan
+    - task: TerraformCLI@0
+      displayName: 'Terraform Plan'
+      inputs:
+          command: 'plan'
+          environmentServiceName: 'myServiceConnection'
+          allowTelemetryCollection: true
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #Terraform Apply
+    - task: TerraformCLI@0
+      displayName: Terraform Apply
+      inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            environmentServiceName: 'myServiceConnection'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+            allowTelemetryCollection: true
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: 'automatedtesting/jmeter/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+      displayName: 'Upload Package'
+      artifact: drop-fakerestapi
+    - task: ArchiveFiles@2
+      displayName: 'Selenium'
+      inputs:
+        rootFolderOrFile: 'automatedtesting/selenium'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-Selenium.zip'
+        replaceExistingArchive: true
+    - publish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-Selenium.zip'
+      artifact: drop-Selenium
+
+
+- stage: Deploy
+  jobs:
+  - deployment: FakeRestAPI
+    pool:
+      vmImage: 'ubuntu-22.04'
+    environment: 'TEST'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: AzureWebApp@1
+              inputs:
+                azureSubscription: 'myServiceConnection'
+                appType: 'webApp'
+                appName: 'udacity-AppService'
+                package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
+                deploymentMethod: 'auto'
+  - deployment: VMDeploy
+    environment:
+      name:  'TEST'
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+                
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                wget https://chromedriver.storage.googleapis.com/104.0.5112.29/chromedriver_linux64.zip
+                # install chrome driver
+                unzip chromedriver_linux64.zip
+                sudo mv chromedriver /usr/bin/chromedriver
+                sudo chown root:root /usr/bin/chromedriver
+                sudo chmod +x /usr/bin/chromedriver
+                chromium-browser -version
+                chromedriver --version
+                pip3 install selenium
+                export PATH=$PATH:/usr/bin/chromedriver
