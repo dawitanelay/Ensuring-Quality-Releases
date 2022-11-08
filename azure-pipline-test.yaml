@@ -193,3 +193,99 @@ stages:
               inputs:
                 targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log'
                 artifactName: 'drop-selenium-logs'
+
+- stage: Integration_Tests
+  jobs:
+  - job: Integration
+    displayName: 'Integration Tests'
+    pool:
+      vmImage: ubuntu-22.04
+    steps:
+    - task: Bash@3
+      displayName: 'Install Postman & Newman'
+      inputs:
+        targetType: 'inline'
+        script: |
+          #! /bin/bash
+          pwd
+          sudo snap install postman
+          sudo npm install -g newman
+          sudo npm install newman-reporter-junitfull -g      
+    - task: Bash@3
+      displayName: 'Regression Tests'
+      inputs:
+        workingDirectory: 'automatedtesting/postman'
+        targetType: 'inline'
+        script: |
+          #! /bin/bash
+          
+          echo 'Regression Test'
+          newman run Regression_Test.json \
+            -e Project-3-ENV.json --delay-request 1000\
+            -r cli,junitfull \
+            --reporter-junitfull-export JUnitReportRegression.xml
+      continueOnError: true
+
+    - task: Bash@3
+      displayName: 'Data Validation Tests'
+      inputs:
+        workingDirectory: 'automatedtesting/postman'
+        targetType: 'inline'
+        script: |
+          #! /bin/bash
+          echo 'Validation Test'
+          newman run Validation_Test.json \
+            -e Project-3-ENV.json --delay-request 1000\
+            -r cli,junitfull \
+            --reporter-junitfull-export JUnitReportValidation.xml
+      continueOnError: true
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/JUnitReport*.xml'
+        testRunTitle: 'Publish test results'
+        searchFolder: 'automatedtesting/postman'
+  
+  
+- stage: Performance_Tests
+  jobs:
+    - job: PerformanceTest
+      pool:
+        vmImage: 'ubuntu-22.04'
+      steps:
+          - bash: |
+              sudo apt-get install openjdk-11-jre-headless -y
+              java -version
+              wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
+              tar xzvf jmeter.tgz
+              mkdir -p log/jmeter
+          - bash: |
+              apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/stress_test.jmx \
+                                          -l log/jmeter/stress-test-result.csv \
+                                          -e -f -o log/jmeter \
+                                          -j log/jmeter/jmeter-stress-test.log
+          - bash: |
+              apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/Endurance_Test.jmx \
+                                          -l log/jmeter/endurance-test-result.csv \
+                                          -e -f -o log/jmeter \
+                                          -j log/jmeter/jmeter-endurance-test.log
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter-$(Build.BuildId).zip'
+              verbose: true
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter-$(Build.BuildId).zip'
+              verbose: true
+          - task: PublishPipelineArtifact@1
+            displayName: Publish JMeter logs
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)/log/jmeter'
+              artifactName: 'drop-jmeter-logs'
