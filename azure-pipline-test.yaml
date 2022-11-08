@@ -226,8 +226,7 @@ stages:
 - stage: Performance_Tests
   jobs:
     - job: PerformanceTest
-      pool:
-        vmImage: 'ubuntu-22.04'
+      pool: myAgentPool
       steps:
           - bash: |
               sudo apt-get install openjdk-11-jre-headless -y
