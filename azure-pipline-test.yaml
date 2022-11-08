@@ -45,7 +45,7 @@ stages:
         backendType: 'azurerm'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate2069818206'
+        backendAzureRmStorageAccountName: 'tfstate1216731519'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
         allowTelemetryCollection: true
@@ -141,7 +141,7 @@ stages:
               targetType: 'inline'
               script: |
                 #! /bin/bash
-                
+
                 sudo apt-get upgrade -y
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
