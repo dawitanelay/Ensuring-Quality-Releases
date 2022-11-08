@@ -5,7 +5,7 @@ client_secret = "-w18Q~iUxAOS2ly-YJUD7MeItyTXQ-e5l1V8Xc1Q"
 tenant_id = "f958e84a-92b8-439f-a62d-4f45996b6d07"
 
 # Resource Group/Location
-location = "southcentralus"
+location = "eastus"
 resource_group = "Azuredevops"
 application_type = "udacity"
 
