@@ -114,8 +114,7 @@ stages:
 - stage: Deploy
   jobs:
   - deployment: FakeRestAPI
-    pool:
-      vmImage: 'ubuntu-22.04'
+    pool: myAgentPool
     environment: 'TEST'
     strategy:
       runOnce:
