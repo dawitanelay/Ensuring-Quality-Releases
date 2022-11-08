@@ -92,7 +92,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
+        rootFolderOrFile: 'automatedtesting/jmeter/fakerestapi'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
@@ -102,7 +102,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Selenium'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        rootFolderOrFile: 'automatedtesting/selenium'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-Selenium.zip'
