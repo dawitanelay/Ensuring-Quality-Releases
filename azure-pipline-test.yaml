@@ -219,6 +219,7 @@ stages:
           #! /bin/bash
           
           echo 'Regression Test'
+          sudo touch Project-3-ENV.json
           newman run Regression_Test.json \
             -e Project-3-ENV.json --delay-request 1000\
             -r cli,junitfull \
@@ -232,6 +233,7 @@ stages:
         targetType: 'inline'
         script: |
           #! /bin/bash
+          sudo touch Project-3-ENV.json
           echo 'Validation Test'
           newman run Validation_Test.json \
             -e Project-3-ENV.json --delay-request 1000\
