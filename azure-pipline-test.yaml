@@ -131,9 +131,8 @@ stages:
                 slotName: 'production'
                 package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
   - deployment: VMDeploy
-    environment:
-      name:  'TEST'
-      resourceType: VirtualMachine
+    pool: myAgentPool
+    environment: 'TEST'
     strategy:
       runOnce:
         deploy:
