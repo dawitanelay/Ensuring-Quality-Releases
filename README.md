@@ -36,7 +36,7 @@ tenant_id = "f958e84a-92b8-439f-a62d-4f45996b6d07"
 ```
  ssh-keygen -t rsa 
 ```
-7 Update the following fields in main.tf file.
+7 Update the following fields in main.tf and/or terraform.tfvars file.
 | parameter| Link |
 | ------ | ------ |
 | subscription_id | subscription id |
