@@ -57,7 +57,7 @@ tenant_id = "f958e84a-92b8-439f-a62d-4f45996b6d07"
 
 11 Install the following on the Agent pool 
 ```
-sudo apt-get -y install zip to install ZIP
+sudo apt-get -y install zip 
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash to install Azure CLI
 sudo apt-get install npm to install NPM
 ```
