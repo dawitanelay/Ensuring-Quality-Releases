@@ -130,9 +130,11 @@ stages:
                 resourceGroupName: 'Azuredevops'
                 slotName: 'production'
                 package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
+
   - deployment: VMDeploy
-    pool: myAgentPool
-    environment: 'TEST'
+    environment:
+          name: 'TEST'
+          resourceType: VirtualMachine
     strategy:
       runOnce:
         deploy:
@@ -149,7 +151,7 @@ stages:
                 sudo apt-get install -y chromium-browser
                 wget https://chromedriver.storage.googleapis.com/104.0.5112.29/chromedriver_linux64.zip
                 # install chrome driver
-                unzip chromedriver_linux64.zip
+                sudo unzip chromedriver_linux64.zip
                 sudo mv chromedriver /usr/bin/chromedriver
                 sudo chown root:root /usr/bin/chromedriver
                 sudo chmod +x /usr/bin/chromedriver
