@@ -81,8 +81,8 @@ sudo apt-get install npm to install NPM
  
  ![ stage ](Screenshot/stage.png)
 ## Output
-### BuildInfrastructure
-![Terraform output](./Screenshot/BuildInfrastructer.png)
+### Build Infrastructure
+![Terraform output](https://github.com/dawitanelay/Ensuring-Quality-Releases/blob/7b7abead099511d3e8b895bcbff20e029989a281/Screenshot/Terraform%20Task.png)
 
 ## Automated Testing
 ### Jmeter
