@@ -64,7 +64,22 @@ sudo apt-get install npm to install NPM
 12 Create a new pipeline.
   - Select you GitHub repository.
   - Select azure pipelines YAML file
+  
 13 Create a new environment.
+
+![environment](Screenshot/envorment.png)
+
+14 From the environment select the VM created from terraform apply. Log into the VM with and paste the registration script
+```
+ ssh username@publicIP 
+ ```
+15 From Pipeline create a variable group and upload the file 
+![ variable group ](Screenshot/conf.png)
+
+16 Run the pipeline.
+ - Successful pipeline run
+ 
+ ![ stage ](Screenshot/stage.png)
 ## Output
 ### BuildInfrastructure
 ![Terraform output](./Screenshot/BuildInfrastructer.png)
