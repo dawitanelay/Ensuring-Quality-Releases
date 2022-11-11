@@ -48,6 +48,7 @@ tenant_id = "f958e84a-92b8-439f-a62d-4f45996b6d07"
 | application_type | Name of the APP - must be unique |
 | virtual_network_name | Name of the VNet |
 | public_key_path | path of the id_rsa.pub file |
+
 8 Login to azure DevOps organization.
 
 9 Create a service connection
