@@ -13,7 +13,7 @@
     </TestPlan>
     <hashTree>
       <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-        <stringProp name="filename">C:/Users/Asus/Desktop/Project-3-Udacity/automatedtesting/jmeter/test.csv</stringProp>
+        <stringProp name="filename">/home/anelay/Desktop/Ensuring-Quality-Releases/automatedtesting/jmeter/report.csv</stringProp>
         <stringProp name="fileEncoding"></stringProp>
         <stringProp name="variableNames">id</stringProp>
         <boolProp name="ignoreFirstLine">false</boolProp>
@@ -51,7 +51,7 @@
           <collectionProp name="Arguments.arguments">
             <elementProp name="webapp" elementType="Argument">
               <stringProp name="Argument.name">webapp</stringProp>
-              <stringProp name="Argument.value">automate-app-test-azure-project-appservice.azurewebsites.net</stringProp>
+              <stringProp name="Argument.value">udacity-appservice.azurewebsites.net</stringProp>
               <stringProp name="Argument.desc">Name of the webapp deployed on azure cloud</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
@@ -215,7 +215,7 @@
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename">C:\Users\Asus\Desktop\Project-3-Udacity\automatedtesting\jmeter\report.csv</stringProp>
+          <stringProp name="filename">/home/anelay/Desktop/Ensuring-Quality-Releases/automatedtesting/jmeter/report.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
