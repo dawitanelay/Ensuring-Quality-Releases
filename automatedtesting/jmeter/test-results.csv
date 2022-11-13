@@ -1,0 +1,9 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1668350628897,4695,GET All Activities,200,OK,Endurance Test 1-2,text,true,,898055,175,2,2,https://udacity-appservice.azurewebsites.net/api/Books/,3913,0,346
+1668350628404,5333,GET All Activities,200,OK,Endurance Test 1-1,text,true,,894187,175,2,2,https://udacity-appservice.azurewebsites.net/api/Books/,4406,0,643
+1668350633593,223,GET Activities,200,OK,Endurance Test 1-2,text,true,,4394,176,2,2,https://udacity-appservice.azurewebsites.net/api/Books/2,223,0,0
+1668350633817,114,DEL Activities,200,OK,Endurance Test 1-2,,true,,211,271,2,2,https://udacity-appservice.azurewebsites.net/api/Books/2?id=2,114,0,0
+1668350633738,205,GET Activities,200,OK,Endurance Test 1-1,text,true,,4780,176,2,2,https://udacity-appservice.azurewebsites.net/api/Books/1,205,0,0
+1668350633943,116,DEL Activities,200,OK,Endurance Test 1-1,,true,,211,271,2,2,https://udacity-appservice.azurewebsites.net/api/Books/1?id=1,116,0,0
+1668350633932,238,POST Acitivities,200,OK,Endurance Test 1-2,text,true,,262,258,2,2,http://udacity-appservice.azurewebsites.net/api/Books,238,0,112
+1668350634060,230,POST Acitivities,200,OK,Endurance Test 1-1,text,true,,262,258,1,1,http://udacity-appservice.azurewebsites.net/api/Books,230,0,110
