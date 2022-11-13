@@ -45,7 +45,7 @@ stages:
         backendType: 'azurerm'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate1216731519'
+        backendAzureRmStorageAccountName: 'tfstate634716911'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
         allowTelemetryCollection: true
@@ -92,7 +92,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
+        rootFolderOrFile: 'automatedtesting/jmeter/fakerestapi'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
@@ -103,7 +103,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Selenium'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        rootFolderOrFile: 'automatedtesting/selenium'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-Selenium.zip'
@@ -130,27 +130,23 @@ stages:
                 resourceGroupName: 'Azuredevops'
                 slotName: 'production'
                 package: '$(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip'
+
   - deployment: VMDeploy
     environment:
-      name:  'TEST'
-      resourceType: VirtualMachine
+          name: 'TEST'
+          resourceType: VirtualMachine
     strategy:
       runOnce:
         deploy:
           steps:
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |
-                #! /bin/bash
-
+            - bash: |
                 sudo apt-get upgrade -y
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
-                wget https://chromedriver.storage.googleapis.com/104.0.5112.29/chromedriver_linux64.zip
+                wget https://chromedriver.storage.googleapis.com/107.0.5304.62/chromedriver_linux64.zip
                 # install chrome driver
-                unzip chromedriver_linux64.zip
+                sudo unzip chromedriver_linux64.zip
                 sudo mv chromedriver /usr/bin/chromedriver
                 sudo chown root:root /usr/bin/chromedriver
                 sudo chmod +x /usr/bin/chromedriver
@@ -181,7 +177,8 @@ stages:
                   unzip -o $(Pipeline.Workspace)/drop-Selenium/$(Build.BuildId)-Selenium.zip 
                   sudo mkdir -p /var/log/selenium
                   sudo chmod 664 /var/log/selenium
-                  
+                  sudo pip3 install selenium
+                  pip3 install --upgrade requests
                   sudo python3 -u login.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
                   cd $(System.DefaultWorkingDirectory)
                   mkdir -p log/selenium

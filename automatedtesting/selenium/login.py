@@ -59,6 +59,9 @@ if __name__ == "__main__":
     options.add_argument("disable-infobars")
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-gpu")
+    options.add_argument("--crash-dumps-dir=/tmp")
+    options.add_argument('--remote-debugging-port=9222')
+    driver = webdriver.Chrome('/usr/bin/chromedriver',options=options)
 
     driver = webdriver.Chrome(options=options)
     print ('Browser started successfully. Navigating to the demo page to login.')
