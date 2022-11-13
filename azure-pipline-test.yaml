@@ -144,6 +144,7 @@ stages:
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
+                sudo apt-get install -y chromium-chromedriver
                 wget https://chromedriver.storage.googleapis.com/107.0.5304.62/chromedriver_linux64.zip
                 # install chrome driver
                 sudo unzip chromedriver_linux64.zip
