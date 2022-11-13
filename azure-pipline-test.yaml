@@ -143,18 +143,18 @@ stages:
                 sudo apt-get upgrade -y
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
-                sudo apt-get install -y chromium-browser
-                sudo apt-get install -y chromium-chromedriver
-                wgethttps://chromedriver.storage.googleapis.com/100.0.4896.20/chromedriver_linux64.zip
-                # install chrome driver
-                sudo unzip chromedriver_linux64.zip
-                sudo mv chromedriver /usr/bin/chromedriver
-                sudo chown root:root /usr/bin/chromedriver
-                sudo chmod +x /usr/bin/chromedriver
-                chromium-browser -version
-                chromedriver --version
-                pip3 install selenium
-                export PATH=$PATH:/usr/bin/chromedriver
+                # sudo apt-get install -y chromium-browser
+                # sudo apt-get install -y chromium-chromedriver
+                # wgethttps://chromedriver.storage.googleapis.com/100.0.4896.20/chromedriver_linux64.zip
+                # # install chrome driver
+                # sudo unzip chromedriver_linux64.zip
+                # sudo mv chromedriver /usr/bin/chromedriver
+                # sudo chown root:root /usr/bin/chromedriver
+                # sudo chmod +x /usr/bin/chromedriver
+                # chromium-browser -version
+                # chromedriver --version
+                # pip3 install selenium
+                # export PATH=$PATH:/usr/bin/chromedriver
 
 - stage: UI_Tests
   jobs:
