@@ -45,7 +45,7 @@ stages:
         backendType: 'azurerm'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate338119138'
+        backendAzureRmStorageAccountName: 'tfstate88329545'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
         allowTelemetryCollection: true
