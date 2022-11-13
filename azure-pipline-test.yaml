@@ -10,7 +10,7 @@ stages:
 - stage: Infrastructure
   jobs:
   - job:  BuildInfrastructure
-    displayName: BuildInfrastructure
+    displayName: Build Infrastructure
     pool: myAgentPool
    #downloads azure secureFile
     steps:
@@ -45,7 +45,7 @@ stages:
         backendType: 'azurerm'
         backendServiceArm: 'myServiceConnection'
         backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate634716911'
+        backendAzureRmStorageAccountName: 'tfstate338119138'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
         allowTelemetryCollection: true
@@ -174,7 +174,7 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
-                  unzip -o $(Pipeline.Workspace)/drop-Selenium/$(Build.BuildId)-Selenium.zip 
+                  unzip -o $(Pipeline.Workspace)/drop-Selenium/$(Build.BuildId)-Selenium.zip
                   sudo mkdir -p /var/log/selenium
                   sudo chmod 664 /var/log/selenium
                   sudo pip3 install selenium
@@ -216,8 +216,8 @@ stages:
       - task: PublishTestResults@2
         displayName: Publish Test Results
         inputs:
-          testResultsFiles: '**/TEST-*.xml' 
-          searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/' 
+          testResultsFiles: '**/TEST-*.xml'
+          searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/'
           publishRunAttachments: true
 
 - stage: Performance_Tests
