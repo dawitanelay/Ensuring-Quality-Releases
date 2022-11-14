@@ -108,7 +108,7 @@ Publish test result
 ## Monitoring & Observability
 [Create alart ](https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-create-new-alert-rule?tabs=metric)
 
-Copy the app service url and https://udacity-appservice.azurewebsites.net/L. This will create a 404 error and triger the email.
+Copy the app service url and https://udacity-appservice.azurewebsites.net/jyt. This will create a 404 error and triger the email.
 ![ stage ](Screenshot/email.png)
 ![ stage ](Screenshot/email2.png)
 
@@ -122,5 +122,7 @@ Custom Logs > Add + > Choose File. Select the file selenium-test.log > Next > Pu
 
 Go to Log Analytics Workspace , to run the following queries:
 ```
-AppServiceHTTPLogs |where _SubscriptionId contains "sub_id" | where ScStatus == '404' ```
-![ stage ](Screenshot/custom-log.png)
+AppServiceHTTPLogs |where _SubscriptionId contains "sub_id" | where ScStatus == '404'
+```
+
+![ stage ](Screenshot/Query.png)
