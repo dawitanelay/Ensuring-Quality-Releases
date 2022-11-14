@@ -104,6 +104,10 @@ Publish test result
 ![ stage ](Screenshot/postman-validation.png)
 ### Selenium
 ![ stage ](Screenshot/UI-test.png)
-### Test Run Summary
 
 ## Monitoring & Observability
+[Create alart ](https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-create-new-alert-rule?tabs=metric)
+
+Copy the app service url and https://udacity-appservice.azurewebsites.net/L. This will create a 404 error and triger the email.
+![ stage ](Screenshot/email.png)
+![ stage ](Screenshot/email2.png)
