@@ -91,10 +91,19 @@ sudo apt-get install npm
 ![ stage ](Screenshot/endurance-test.png)
 
 2 ![ stage ](Screenshot/strees-test.png)
+###  Postman
+Regression test
+ ![ stage ](Screenshot/regression-tests.png)
+ 
+Validation test
+![ stage ](Screenshot/validation-test.png)
+Publish test result
+
+![ stage ](Screenshot/postman-regression.png)
+
+![ stage ](Screenshot/postman-validation.png)
 ### Selenium
-
-### Postman
-
+![ stage ](Screenshot/UI-test.png)
 ### Test Run Summary
 
 ## Monitoring & Observability
