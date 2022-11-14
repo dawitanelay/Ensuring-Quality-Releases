@@ -111,3 +111,10 @@ Publish test result
 Copy the app service url and https://udacity-appservice.azurewebsites.net/L. This will create a 404 error and triger the email.
 ![ stage ](Screenshot/email.png)
 ![ stage ](Screenshot/email2.png)
+
+Set up log analytics workspace properly to get logs: Go to Virtual Machines and Connect the VM created on Terraform to the Workspace.
+
+Set up custom logging , in the log analytics workspace go to. In this case custom log name is UI_Test_Log_CL.
+
+Custom Logs > Add + > Choose File. Select the file selenium-test.log > Next > Put in the following paths as type Linux: /var/log/selenium/selenium-test.log.
+
