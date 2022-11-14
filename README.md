@@ -86,7 +86,11 @@ sudo apt-get install npm
 
 ## Automated Testing
 ### Jmeter
+1 Endurance Testing 
 
+![ stage ](Screenshot/endurance-test.png)
+
+2 ![ stage ](Screenshot/strees-test.png)
 ### Selenium
 
 ### Postman
