@@ -1,11 +1,11 @@
 # Azure subscription vars
-subscription_id = "373225e3-4428-4fd7-bd11-c0f187aa1371"
-client_id = "5e3e910a-3351-4ac0-b86b-719b09d6ee18"
-client_secret = "XPP8Q~tUtMBW1wbbSj2mAfwoQQIKGNLyMyOdBc94"
+subscription_id = "d06323f0-ffb0-484c-9e89-0ca5e1d58412"
+client_id = "8f7774eb-0355-41a2-ab5e-34dc81877f1f"
+client_secret = "ss48Q~KCsh1d~VnyhweLBxGGLyzlO2rIqIaZPcl8"
 tenant_id = "f958e84a-92b8-439f-a62d-4f45996b6d07"
 
 # Resource Group/Location
-location = "southcentralus"
+location = "eastus"
 resource_group = "Azuredevops"
 application_type = "udacity"
 
