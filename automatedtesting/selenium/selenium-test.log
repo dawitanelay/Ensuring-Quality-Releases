@@ -1,0 +1,19 @@
+Starting the browser...
+Browser started successfully. Navigating to the demo page to login.
+[*] Login in as standard_user
+[*] Adding items to cart.
+        - Sauce Labs Backpack was added.
+        - Sauce Labs Bike Light was added.
+        - Sauce Labs Bolt T-Shirt was added.
+        - Sauce Labs Fleece Jacket was added.
+        - Sauce Labs Onesie was added.
+        - Test.allTheThings() T-Shirt (Red) was added.
+[*] Removing items to cart.
+        - Sauce Labs Backpack was removed.
+        - Sauce Labs Bike Light was removed.
+        - Sauce Labs Bolt T-Shirt was removed.
+        - Sauce Labs Fleece Jacket was removed.
+        - Sauce Labs Onesie was removed.
+        - Test.allTheThings() T-Shirt (Red) was removed.
+[✓] All items were removed successfully.
+[✓] All tests ran successfully.
